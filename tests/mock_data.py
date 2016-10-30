@@ -49,7 +49,7 @@ class MockData(object):
 
     def clear_test_db(self):
         """Clear the test database"""
-        if os.path.exists('room_alloc.db'):
-            os.remove('room_alloc.db')
+        if os.path.exists('mock.db'):
+            os.remove('mock.db')
 
 

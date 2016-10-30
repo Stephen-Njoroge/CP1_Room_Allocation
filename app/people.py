@@ -2,7 +2,7 @@
 import random
 from db.dbManager import DbManager
 from tkinter import filedialog as fd
-from rooms import Room, LivingRoom, OfficeRoom
+from .rooms import Room, LivingRoom, OfficeRoom
 
 class Person(object):
 	"""Defines Persons and handles room allocation methods for Fellows and Staff.
