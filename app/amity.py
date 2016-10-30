@@ -19,8 +19,8 @@ Options:
 import cmd
 import sys
 from docopt import docopt, DocoptExit
-from rooms import Room
-from people import Person, Staff, Fellow
+from .rooms import Room
+from .people import Person, Staff, Fellow
 
 class DocoptLanguageError(Exception):
 
