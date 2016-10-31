@@ -6,7 +6,7 @@ import os
 class MockData(object):
     """Class to avail data for tests"""
 
-    db_name = 'mock.db'
+    db_name = 'mock_data.db'
 
     def __init__(self):
         """Create a test database"""
@@ -49,7 +49,7 @@ class MockData(object):
 
     def clear_test_db(self):
         """Clear the test database"""
-        if os.path.exists('mock.db'):
-            os.remove('mock.db')
+        if os.path.exists('mock_data.db'):
+            os.remove('mock_data.db')
 
 
