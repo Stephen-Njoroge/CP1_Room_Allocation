@@ -151,23 +151,23 @@ loads all app data into the application
 load_state
 ```
 
-**Save data in the application to a new database**
-
-saves app data to a specified database
-```bash
-save_state
-```
-
 **5. Load people from file**
 
 Adds people to rooms from a txt file
 ```bash
 load_people
 ```
-**6. I Quit!**
+**6. Quit!**
 To exit from the application, simply type `quit` on yout room-alloc app
 ```bash
 quit
+```
+
+**7. Save data in the application to a new database**
+
+saves app data to a specified database
+```bash
+save_state
 ```
 
 You can get out of the Virtual environment by simply typing `deactivate` on your commandline
