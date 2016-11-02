@@ -145,12 +145,15 @@ print_room camelot --o=y
 ```
 
 ** Load all data that is in the database to the application.
+loads all app data into the application
 
 ```bash
 load_state
 ```
 
 ** Save data in the application to a new database.
+saves app data to a specified database
+
 ```bash
 save_state
 ```
