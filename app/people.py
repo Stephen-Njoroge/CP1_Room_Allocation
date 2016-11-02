@@ -3,6 +3,7 @@ import random
 from db.dbManager import DbManager
 from tkinter import filedialog as fd
 from .rooms import Room, LivingRoom, OfficeRoom
+from shutil import copyfile
 
 class Person(object):
 	"""Defines Persons and handles room allocation methods for Fellows and Staff.
@@ -100,6 +101,24 @@ class Person(object):
 			WHERE room_id is NULL or room_id = ''""")
 		if unallocated:
 			return unallocated
+
+	def load_database(self):
+		'''To load all the data in the database'''
+		rooms = self.db.select_all("""SELECT * FROM rooms""")
+		staff = self.db.select_all("""SELECT * FROM staff""")
+		fellows = self.db.select_all("""SELECT * FROM fellows""")
+
+		print('rooms \n {}'.format(rooms))
+		print('staff \n {}'.format(staff))
+		print('fellows \n {}'.format(fellows))
+
+	def save_database(self, args):
+		destination_path = ('/Users/steve254/Documents/amity/CP1_Room_Allocation')
+		filename = args['<filename>']
+		if not filename:
+			filename = 'Amity.db'
+		copyfile(destination_path + '/amityrecords.db', destination_path + '/' + '{}'.format(filename))
+
 
 
 
@@ -319,5 +338,6 @@ class Fellow(Person):
 				raise ValueError("{} has no vacant space." .format(new_room_name))
 		else:
 			raise ValueError("A room with that name does not exist.")
+
 
 

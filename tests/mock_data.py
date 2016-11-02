@@ -21,12 +21,12 @@ class MockData(object):
         return rooms.create_room(arguments)
 
     def create_office_spaces(self, room_name):
-        rooms = Rooms()
+        rooms = Room()
         arguments = {'<room_name>': room_name,
                      'living': False,
                      'office': True}
 
-        return rooms.create_rooms(arguments)
+        return rooms.create_room(arguments)
 
     def fetch_data(self, table_name, single_record=True):
         if single_record:

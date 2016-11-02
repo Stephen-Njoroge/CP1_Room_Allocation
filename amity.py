@@ -130,6 +130,18 @@ class Amity(cmd.Cmd):
 		except ValueError as e:
 			print(e)
 
+	@pass_opt
+	def do_load_state(self, args):
+		"""Usage: load_state"""
+		people = Person()
+		people.load_database()
+
+	@pass_opt
+	def do_save_state(self, args):
+		"""Usage: save_state [<filename>]"""
+		load = Person()
+		load.save_database(args)
+
 	def do_quit(self, arg):
 		"""Quits out of Interactive Mode."""
 		print('Thankyou!')
