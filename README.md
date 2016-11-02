@@ -178,9 +178,9 @@ Contributions are **welcome** and will be fully **credited**.
 
 We accept contributions via Pull Requests on [Github](https://github.com/Stephen-Njoroge/CP1_Room_Allocation.git).
 
-## Security
+## Donations
 
-If you discover any security related issues, contact[Stephen Njoroge](mailto:stephen.njoroge@andela.com) or create an issue.
+If you feel philanthropic, contact[ Stephen Njoroge](mailto:stephen.njoroge@andela.com) or create an issue.
 
 
 ## License
