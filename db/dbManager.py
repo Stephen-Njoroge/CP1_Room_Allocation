@@ -1,123 +1,30 @@
-import sqlite3 as lite
+import os
+import sys
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy import create_engine
+from sqlalchemy.orm import relationship, sessionmaker
+from sqlalchemy import Column, ForeignKey, Integer, String
 
+Base = declarative_base()
 
-class DbManager:
-	"""Initialize a db connection with sqlite3"""
-	def __init__(self):
-		db_name = "amityrecords.db"
-		self.connection = lite.connect(db_name)
-		self.cursor = self.connection.cursor()
-		self.migrations()
+class Rooms(Base):
+	__tablename__ = "rooms"
+	id = Column(Integer, primary_key=True, autoincrement=True)
+	room_name = Column(String(150), nullable=False)
+	room_type = Column(String(150), nullable=False)
+	room_capacity = Column(Integer, nullable=False)
+	room_occupants = Column(Integer, nullable=True)
 
-	def migrations(self):
-		""" Creates tables in case they do not exist """
-		with self.connection:
-			self.cursor.executescript("""
-				CREATE TABLE IF NOT EXISTS rooms (
-				id INTEGER PRIMARY KEY AUTOINCREMENT,
-				name TEXT UNIQUE,
-				type CHAR(1)
-				);
-				CREATE TABLE IF NOT EXISTS fellows (
-				id INTEGER PRIMARY KEY AUTOINCREMENT,
-				name TEXT,
-				accomodation TEXT,
-				room_id INTEGER
-				);
-				CREATE TABLE IF NOT EXISTS staff (
-				id INTEGER PRIMARY KEY AUTOINCREMENT,
-				name TEXT,
-				room_id INTEGER
-				);
-				""")
+class People(Base):
+	__tablename__ = "people"
+	id = Column(Integer, primary_key=True, autoincrement=True)
+	person_name = Column(String(150), nullable=False)
+	person_role = Column(String(150), nullable=False)
+	accomodation = Column(String(100), nullable=True)
+	assigned_office = Column(String(150), nullable=True)
+	assigned_living = Column(String(150), nullable=True)
 
-	def execute_many_querries(self, query_string, data):
-		""" To querry multiple commands without using for loops """
-		try:
-			with self.connection:
-				self.cursor.executemany(query_string, data)
-				return True
-		except lite.Error as er:
-			print ('er: %s' % er)
-			return False
-
-	def insert(self, query_string):
-		"""
-		run various sqllite querries and returns the id of last item
-		Arguments:
-				query_string args> sql command to run
-
-		"""
-		try:
-			with self.connection:
-				self.cursor.execute(query_string)
-				return self.cursor.lastrowid
-		except lite.IntegrityError:
-			return False
-
-	def update(self, query_string):
-		"""
-		Method to update records
-		Arguments:
-				query_string string> sql command to run
-
-		"""
-		# import ipdb
-		# ipdb.set_trace()
-
-		try:
-			with self.connection:
-				self.cursor.execute(query_string)
-				return self.cursor.lastrowid
-		except lite.Error as er:
-			print ('er: %s' % er)
-			return False
-
-	def select_all(self, query_string):
-		"""
-		Method to select data from sqlite
-
-		Arguments:
-				query_string sql command to execute.
-
-		"""
-		try:
-			with self.connection:
-				self.cursor.execute(query_string)
-				return self.cursor.fetchall()
-		except:
-			return False
-
-	def select_one(self, query_string):
-		"""
-		Method to select one record from data
-
-		Arguments:
-				query_string sql command to run
-
-		"""
-		try:
-			with self.connection:
-				# import ipdb
-				# ipdb.set_trace()
-				self.cursor.execute(query_string)
-				return self.cursor.fetchall()
-		except:
-			return False
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	 
+def create_engine_db(db_name):
+    engine = create_engine("sqlite:///"+db_name)
+    Base.metadata.create_all(engine)
+    return engine
