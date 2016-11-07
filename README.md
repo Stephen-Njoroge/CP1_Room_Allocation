@@ -53,29 +53,24 @@ $ pip freeze
 To get the app running, run the entry script file with an `--i` or `--interactive` option
 
 ```bash
-$ python amity.py --i
+$ python app.py -i
 ```
 
 or
 ```bash
-$ python amity.py --interactive
+$ python app.py --interactive
 ```
 
 **1. Create Rooms**
 
 To create a living or office space, follow the following docopt pattern
 ```bash
-Usage: create_rooms (living|office) <room_name>...
+Usage: create_room <room_name>...
 ```
 
-Creating living spaces
+Creating rooms
 ```bash
-create_rooms living woodwing bluewing redwing
-```
-
-Creating office spaces
-```bash
-create_rooms office camelot midgar mordor
+create_room scala php go
 ```
 
 **2. Add Person**
@@ -84,40 +79,35 @@ You can either add a staff member or a fellow with the `add_person` command.
 A fellow can either opt in or out of the Amity accomodation plan.
 The docopt patter is as follows
 ```bash
-Usage: add_person <first_name> <last_name> (fellow|staff) [--a=n]
+Usage: add_person <first_name> <last_name> [--accomodation=n]
 ```
 
 Add a staff member
 ```bash
-add_person Joshua Mwaniki staff
+add_person Joshua Mwaniki 
 ```
 
 Add a fellow that opts in to the andela accommodation
 ```bash
-add_person Daniel Migwi fellow --a=y
+add_person Daniel Migwi fellow --accomodation=y
 ```
 
 Add a fellow that opts out of the andela accommodation
 ```bash
-add_person Rehema Wachira fellow
+add_person Rehema Wachira --accomodation=n
 ```
 
 **3. Reallocate a person**
 
 You can reallocate a person from one space (living or office) to another using the following pattern
 ```bash
-reallocate_person (fellow|staff) <person_identifier> <new_room_name>
+reallocate_person <person_identifier>
 ```
 
 Reallocate a fellow with id 1 from swift to scala
 
 ```bash
-reallocate_person fellow 1 scala
-```
-Reallocate a staff with id 10 from midgar to krypton
-
-```bash
-reallocate_person staff 10 krypton
+reallocate_person John Migwi
 ```
 
 **4. Print out data**
@@ -206,4 +196,3 @@ If you feel philanthropic, contact[ Stephen Njoroge](mailto:stephen.njoroge@ande
 > OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 > THE SOFTWARE.
 
-[ico-license]: https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square
