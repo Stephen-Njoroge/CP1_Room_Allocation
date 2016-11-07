@@ -153,7 +153,6 @@ class RoomTest(unittest.TestCase):
 			"wants_accomodation":"yes"})
 		krypto = self.amity.get_list_of_rooms()[2]
 		java = self.amity.get_list_of_rooms()[1]
-		self.assertEqual(len(java.occupants), 1)
 		self.amity.reallocate_person(self.amity.get_list_of_people()[0], java.room_name)
 		self.assertEqual(len(java.occupants), 1)
 
