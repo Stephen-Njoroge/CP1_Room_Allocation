@@ -1,3 +1,4 @@
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/9b150efb71394b1eaa974a2e60f1bf7c)](https://www.codacy.com/app/stephen-njoroge/CP1_Room_Allocation?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Stephen-Njoroge/CP1_Room_Allocation&amp;utm_campaign=Badge_Grade)
 # CP1_Room_Allocation
 
 
