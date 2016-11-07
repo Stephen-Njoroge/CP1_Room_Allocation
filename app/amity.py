@@ -29,18 +29,18 @@ class Amity(object):
         '''
         for rooms in self.all_rooms:
             if room["room_name"] == rooms.room_name:
-                cprint (("\n"+rooms.room_name+" already exists. "), 'green')
+                cprint (("\n"+rooms.room_name.upper()+" already exists. \n"), 'green')
                 return
         if room["room_type"] == "office":
             new_room = OfficeSpace(room["room_name"])
             self.all_rooms.append(new_room)
             self.office_spaces.append(new_room)
-            text = ("\n You have added "+new_room.room_name+" to Amity offices")
+            text = ("\n You have added "+new_room.room_name.upper()+" to Amity offices\n")
         else:
             new_room = LivingSpace(room["room_name"])
             self.all_rooms.append(new_room)
             self.living_spaces.append(new_room)
-            text = ("\n You have added "+new_room.room_name+" to Living Spaces in Amity ")
+            text = ("\n You have added "+new_room.room_name.upper()+" to Living Spaces in Amity \n")
         cprint ((text), 'green')
 
     def create_person(self, person):
@@ -52,18 +52,18 @@ class Amity(object):
         '''  
         for people in self.all_people:
             if person["person_name"] == people.person:
-                cprint (("\n"+people.person+" a person with that name already exists."), 'green')
+                cprint (("\n"+people.person.upper()+" a person with that name already exists. \n"), 'green')
                 return
         if person["role"] == "staff":
             new_person = Staff(person["person_name"]) 
             self.staff_list.append(new_person)
-            cprint (("\n You have added "+new_person.person+" as a staff member in Amity."), 'green')
+            cprint (("\n You have added "+new_person.person.upper()+" as a staff member in Amity \n"), 'green')
         else:
             new_person = Fellow(person["person_name"])
             new_person.accomodation = person["wants_accomodation"]
             self.fellows_list.append(new_person)
-            cprint (("\n You have added "+new_person.person+" as a Fellow in Amity."), 'green')
-            if new_person.accomodation in ["yes", "Y"]:
+            cprint (("\n You have added "+new_person.person.upper()+" as a Fellow in Amity \n"), 'green')
+            if new_person.accomodation.lower() in ["yes", "y"]:
                 self.assign_fellow_to_living_space(new_person)
             else: self.unallocated_people.append(new_person)
         self.all_people.append(new_person)
@@ -85,12 +85,12 @@ class Amity(object):
                 new_person.assigned_office = random_room.room_name
                 self.allocated_people.append(new_person)
                 if random_room not in self.allocated_rooms: self.allocated_rooms.append(random_room)
-                text = ("\n"+new_person.person+" has been assigned to "+random_room.room_name)
+                text = ("\n"+new_person.person.upper()+" has been assigned to "+random_room.room_name.upper()+"\n")
             else:
-                text = ("\n"+random_room.room_name+" is full. "+new_person.person+" cannot be assigend here.")
+                text = ("\n"+random_room.room_name.upper()+" is full. "+new_person.person.upper()+" cannot be assigend here. \n")
                 if new_person not in self.unallocated_people: self.unallocated_people.append(new_person)
         else:
-            text = ("\n There are no office rooms in Amity. Create a room before adding people.")
+            text = ("\n There are no offices in Amity. Create a room before adding people. \n")
             if new_person not in self.unallocated_people: self.unallocated_people.append(new_person)
         cprint ((text), 'green')
             
@@ -102,12 +102,12 @@ class Amity(object):
                 new_person.assigned_living = random_room.room_name
                 if new_person not in self.allocated_fellows: self.allocated_fellows.append(new_person)
                 if random_room not in self.allocated_rooms: self.allocated_rooms.append(random_room)
-                text = ("\n"+new_person.person+" has been assigned to "+random_room.room_name)
+                text = ("\n"+new_person.person.upper()+" has been assigned to "+random_room.room_name.upper()+"\n")
             else:
-                text = ("\n"+random_room.room_name+" is full. "+new_person.person+" create rooms before adding people.")
+                text = ("\n"+random_room.room_name.upper()+" is full. "+new_person.person.upper()+" create rooms before adding people. \n")
                 if new_person not in self.unallocated_people: self.unallocated_people.append(new_person)
         else:
-            text = ("\n There are no living rooms in Amity. Create rooms before adding people.")
+            text = ("\n There are no living rooms in Amity. Create rooms before adding people. \n")
             if new_person not in self.unallocated_people: self.unallocated_people.append(new_person)
         cprint ((text), 'green')
 
@@ -139,13 +139,13 @@ class Amity(object):
         '''
         rooms_list = [room.room_name for room in self.all_rooms]
         if room_name not in rooms_list:
-            cprint (("\n"+room_name+" does not exist. \n"), 'green')
+            cprint (("\n"+room_name.upper()+" does not exist. \n"), 'green')
         elif room_name in [person.assigned_living, person.assigned_office]:
-            cprint (("\n"+person.person+" is already assigned to "+room_name), 'green')
+            cprint (("\n"+person.person.upper()+" is already assigned to "+room_name.upper()+"\n"), 'green')
         else:
             room = [room for room in self.all_rooms if room.room_name == room_name][0]
             if type(person) == Staff and type(room) == LivingSpace:
-                cprint(("\n Staff cannot be assigned to living spaces."), 'green')
+                cprint(("\n Staff cannot be assigned to living spaces. \n"), 'green')
             elif self.is_room_available(room):
                 if type(room) == OfficeSpace:
                     self.clean_up_office_reallocations(person)
@@ -160,9 +160,9 @@ class Amity(object):
                 room.occupants.append(person)
                 if person not in self.allocated_people: self.allocated_people.append(person)
                 if room not in self.allocated_rooms: self.allocated_rooms.append(room)
-                cprint (("\n You have reallocated "+person.person+" to "+room.room_name+"."), 'green')
+                cprint (("\n You have reallocated "+person.person.upper()+" to "+room.room_name.upper()+"\n"), 'green')
             else:
-                cprint (("\n The " + room.room_name +" is full try another room."), 'green')                   
+                cprint (("\n The " + room.room_name +" is full try another room. \n"), 'green')                   
                         
     def clean_up_office_reallocations(self, person):
         '''
@@ -207,14 +207,14 @@ class Amity(object):
     def write_allocated_to_terminal(self):
         '''Print allocated fellows to terminal'''
         if len(self.all_rooms) > 0:
-            cprint (("\n Showing allocated people..."), 'green')
+            cprint (("\n Showing allocated people...\n"), 'green')
             for room in self.all_rooms:
-                text = "\n"+room.room_name
+                text = "\n"+room.room_name.upper()+"\n"
                 text = text + ("="*40 + "\n")           
                 if len(room.occupants) > 0:
-                    text = text + (", ".join([occupant.person for occupant in room.occupants])+"\n")
+                    text = text + (", ".join([occupant.person.upper() for occupant in room.occupants])+"\n")
                 else:
-                    text = text + ("\n This room is empty")
+                    text = text + ("\n This room is empty \n")
                 cprint ((text), 'green')
         else:
             cprint (("\n All rooms are empty. \n"), 'green')
@@ -224,10 +224,10 @@ class Amity(object):
         cprint (("\n Check allocations in: "+filename), 'red')
         with open(filename, mode="w", encoding='utf-8') as text:
             for room in self.all_rooms:
-                text.write("\n"+room.room_name+"\n")
+                text.write("\n"+room.room_name.upper()+"\n")
                 text.write("-"*40 +"\n")            
                 if len(room.occupants) > 0:
-                    text.write(", ".join([occupant.person for occupant in room.occupants])+"\n")    
+                    text.write(", ".join([occupant.person.upper() for occupant in room.occupants])+"\n")    
                 else:
                     text.write("Room is empty! \n")
             
@@ -237,9 +237,9 @@ class Amity(object):
             text = ("\n loading...\n")
             text = "\n Unallocated people:"+"\n"
             text = text + ("*"*40 + "\n")
-            text = text + (", ".join([person.person for person in self.unallocated_people])+"\n")
+            text = text + (", ".join([person.person.upper() for person in self.unallocated_people])+"\n")
         else: 
-            text = ("\n Unallocated people do not exist.")
+            text = ("\n Un allocated people do not exist.\n")
         cprint ((text), 'green')
             
     def write_unallocated_to_file(self, filename):
@@ -249,7 +249,7 @@ class Amity(object):
             if len(self.unallocated_people) > 0:
                 text.write("Unallocated people:"+"\n")
                 text.write("="*40 +"\n")
-                text.write(", ".join([person.person for person in self.unallocated_people]))
+                text.write(", ".join([person.person.upper() for person in self.unallocated_people]))
             else:
                 text.write("There are no unallocated people at the moment.")
 
@@ -258,13 +258,13 @@ class Amity(object):
             for room in self.all_rooms:
                 if room.room_name == room_name:
                     if len(room.occupants) > 0:
-                        text = ("\n"+room.room_name)
+                        text = ("\n"+room.room_name.upper()+"\n")
                         text = text + ("*"*50 +"\n")
-                        text = text + (", ".join([occupant.person for occupant in room.occupants])+"\n")
+                        text = text + (", ".join([occupant.person.upper() for occupant in room.occupants])+"\n")
                     else:
-                        text = ("\n This room is empty.")
+                        text = ("\n This room is empty. \n")
         else:
-            text = ("\n There are no that room yet.")    
+            text = ("\n There are no rooms yet. \n")    
         cprint ((text), 'green')
 
     def load_rooms_from_db(self, room):

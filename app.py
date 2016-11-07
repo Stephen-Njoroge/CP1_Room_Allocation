@@ -68,15 +68,13 @@ class Amity(cmd.Cmd):
     colored(__doc__)
     cprint("Type help for a list of commands. \n", 'green' )
 
-    prompt = ''
+    prompt = '->'
     file = None
 
     @pass_opt
     def do_create_room(self, arg):
         """
-        Creates a room in Amity. A room can either be an office or living space.
-        Create as many rooms as possible by specifying multiple room names
-        after the create_room command.
+            Command to create rooms, can create multiple rooms.
         
         Usage:
             create_room <room_name>...
@@ -87,6 +85,9 @@ class Amity(cmd.Cmd):
                 room_type = input("Enter a room type, either 'office' or 'living': ")
                 if room_type in ["office", "living"]:
                     amity.create_room({"room_name": room, "room_type": room_type})
+                else:
+                    cprint('Error! type living or office!')
+                    return
 
         except ValueError as e:
             cprint(e, 'red')
@@ -94,7 +95,7 @@ class Amity(cmd.Cmd):
     @pass_opt
     def do_add_person(self, arg):
         """
-        Creates a person and assign them to a room in Amity. 
+        Creates a person and assign them to an office, living space or both. 
 
         Usage:
             add_person <first_name> <last_name> [--accomodation=n]
@@ -103,10 +104,26 @@ class Amity(cmd.Cmd):
             person = arg["<first_name>"] + " " + arg["<last_name>"]
             wants_accomodation = arg["--accomodation"]
             print ("Name: "+person)
+            
             person_type = input("Enter a role, either 'staff' or 'fellow': ")
-            if wants_accomodation in ["yes", "Y", "no", 'n', 'N']: print ("Wants Accomodation: "+wants_accomodation)
-            if person_type in ["staff", "fellow"]: amity.create_person(
-                {"person_name": person, "role": person_type, "wants_accomodation": wants_accomodation})
+            while person_type.lower() not in ['staff','fellow']:
+                print('Invalid Role')
+                person_type = input("Enter a role, either 'staff' or 'fellow': ")
+
+            if person_type.lower() == 'fellow':
+                if wants_accomodation == None:
+                    wants_accomodation = 'n'
+                elif wants_accomodation.lower() in ["yes", "y", "no", 'n']: 
+                    print ("Wants Accomodation: "+wants_accomodation)
+                else:
+                    cprint('Invalid Choice for wants accommodation', 'red')
+                    return
+            elif person_type.lower() == 'staff':
+                if wants_accomodation != None and wants_accomodation.upper() == 'Y':
+                    cprint('\n Staff members can not be allocated accommodation', 'green')
+                wants_accomodation = 'n'
+
+            amity.create_person({"person_name": person, "role": person_type, "wants_accomodation": wants_accomodation})
         except ValueError as e:
             cprint((e), 'red')
 
@@ -125,14 +142,15 @@ class Amity(cmd.Cmd):
                 print("Name: "+person.person)
                 new_room = input("Enter the name of the new room: ")
                 amity.reallocate_person(person, new_room) 
+            else:
+                cprint('Such a person does not exist!', 'red')
         except ValueError as e:
             cprint(e, 'red')
 
   
     def get_person(self, person_name):
         '''
-        This is a helper function that verifies the person entered 
-        exists in the list of all people. 
+        Checks whether the person exists in the list of people
         '''
         try:
             names = [person.person for person in amity.all_people]
@@ -146,11 +164,14 @@ class Amity(cmd.Cmd):
     @pass_opt
     def do_load_people(self, arg):
         '''
-        Add people to rooms from a txt file.
+        Load people from a file.
 
         Usage:
             load_people <filename>
         '''
+        if not os.path.exists(arg["<filename>"]):
+            cprint('The stated file does not exist.', 'red')
+            return False
         try:
             amity.load_people_from_file(arg["<filename>"])
         except ValueError as e:
@@ -209,6 +230,7 @@ class Amity(cmd.Cmd):
         '''
         try:
             db_name = arg['--db'] or 'amity.db'
+            database = Database()
             database.save_state(db_name)
             print ("The application data has been saved to "+db_name+"\n")
         except ValueError as e:
@@ -221,7 +243,11 @@ class Amity(cmd.Cmd):
         Usage:
             load_state <sqalchemy_database>
         '''
+        if not os.path.exists(arg["<sqalchemy_database>"]):
+            cprint('The database does not exist.', 'red')
+            return False
         try:
+            database = Database()
             database.load_state(arg["<sqalchemy_database>"])
             print ("\n The application data has been loaded from "+arg["<sqalchemy_database>"]+"\n")
         except ValueError as e:
@@ -230,14 +256,22 @@ class Amity(cmd.Cmd):
     def do_quit(self, arg):
         """Quits out of Interactive Mode."""
         cprint(('Thankyou for Using Amity R.A Sytem!'), 'yellow')
-        print u"\U0001F602" u" \U0001F602" u" \U0001F602"
+        print (u"\U0001F602" u" \U0001F602" u" \U0001F602")
         cprint (('#TIA'), 'blue')
         exit()
 
 opt = docopt(__doc__, sys.argv[1:])
 
 if opt['--interactive']:
-    Amity().cmdloop()
+
+    try:
+        Amity().cmdloop()
+
+    except KeyboardInterrupt:
+        cprint(('Thankyou for Using Amity R.A Sytem!'), 'yellow')
+        print (u"\U0001F602" u" \U0001F602" u" \U0001F602")
+        cprint (('#TIA'), 'blue')
+        exit()
 
 print(opt)
 

@@ -2,6 +2,8 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from db.dbManager import *
 from app.amity import Amity
+import os
+from termcolor import cprint
 
 amity = Amity()
 
@@ -71,4 +73,5 @@ class Database(object):
                 db_person.assigned_office, db_person.assigned_living)
 
         amity.populate_room_occupants_from_db_load()
+
 
